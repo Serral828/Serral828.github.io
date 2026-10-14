@@ -23,4 +23,11 @@ export const friends: Friend[] = [
     description: "欢迎来到 Clairis 的博客",
     avatar: "https://clairis.cn/images/avatar.jpg",
   },
+  {
+    name: "嘴哥",
+    url: "https://mouthbig324-ai.github.io/",
+    description: "旅行、影像与生活碎片",
+    avatar:
+      "https://mouthbig324-ai.github.io/_astro/graffiti-avatar.DiKG8znJ_Z2nUuKm.webp",
+  },
 ];
