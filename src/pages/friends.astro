@@ -1,0 +1,81 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import Header from "@/components/Header.astro";
+import Breadcrumb from "@/components/Breadcrumb.astro";
+import Main from "@/components/Main.astro";
+import Footer from "@/components/Footer.astro";
+import Comments from "@/components/Comments.astro";
+import { friends } from "@/data/friends";
+import { useTranslations } from "@/i18n";
+import config from "@/config";
+
+const { site } = config;
+const t = useTranslations(Astro.currentLocale ?? site.lang);
+const avatarUrl = new URL("favicon.png", site.url).href;
+---
+
+<Layout title={`${t.nav.friends} | ${site.title}`} description="朋友们的博客。">
+  <Header />
+
+  <Breadcrumb />
+
+  <Main pageTitle={t.nav.friends} pageDesc="朋友们的博客。">
+    {
+      friends.length > 0 ? (
+        <ul class="grid gap-4 sm:grid-cols-2">
+          {friends.map(friend => (
+            <li>
+              <a
+                href={friend.url}
+                target="_blank"
+                rel="noopener"
+                class="border-border hover:border-accent flex items-center gap-4 rounded-md border p-4 transition-colors"
+              >
+                {friend.avatar ? (
+                  <img
+                    src={friend.avatar}
+                    alt=""
+                    width="48"
+                    height="48"
+                    loading="lazy"
+                    class="size-12 shrink-0 rounded-full object-cover"
+                  />
+                ) : (
+                  <span
+                    aria-hidden="true"
+                    class="bg-muted flex size-12 shrink-0 items-center justify-center rounded-full text-lg font-medium"
+                  >
+                    {friend.name.slice(0, 1)}
+                  </span>
+                )}
+                <span class="min-w-0">
+                  <span class="block truncate font-medium">{friend.name}</span>
+                  {friend.description && (
+                    <span class="text-muted-foreground block truncate text-sm">
+                      {friend.description}
+                    </span>
+                  )}
+                </span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p class="text-muted-foreground">还没有友链，欢迎交换。</p>
+      )
+    }
+
+    <section class="app-prose mt-12">
+      <h2>申请友链</h2>
+      <p>欢迎交换友链，在下方评论留下你的站点信息即可，格式如下：</p>
+      <pre><code>名称：{site.title}
+链接：{site.url}
+简介：{site.description}
+头像：{avatarUrl}</code></pre>
+    </section>
+
+    <Comments />
+  </Main>
+
+  <Footer />
+</Layout>
