@@ -1,0 +1,66 @@
+---
+/**
+ * Giscus comments, stored in this repo's GitHub Discussions.
+ * Theme follows the site's light/dark toggle.
+ */
+---
+
+<section class="mt-8" aria-label="评论">
+  <div id="giscus-container"></div>
+</section>
+
+<script>
+  const GISCUS = {
+    repo: "Serral828/Serral828.github.io",
+    repoId: "R_kgDOVI__Nw",
+    category: "Announcements",
+    categoryId: "DIC_kwDOVI__N84DIZ2a",
+  };
+
+  const giscusTheme = () =>
+    document.documentElement.getAttribute("data-theme") === "dark"
+      ? "noborder_dark"
+      : "noborder_light";
+
+  function mountGiscus() {
+    const container = document.getElementById("giscus-container");
+    if (!container) return;
+
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.async = true;
+    script.crossOrigin = "anonymous";
+    Object.entries({
+      repo: GISCUS.repo,
+      "repo-id": GISCUS.repoId,
+      category: GISCUS.category,
+      "category-id": GISCUS.categoryId,
+      mapping: "pathname",
+      strict: "1",
+      "reactions-enabled": "1",
+      "emit-metadata": "0",
+      "input-position": "top",
+      theme: giscusTheme(),
+      lang: "zh-CN",
+      loading: "lazy",
+    }).forEach(([key, value]) => script.setAttribute(`data-${key}`, value));
+
+    container.replaceChildren(script);
+  }
+
+  // Sync the iframe theme whenever the site theme changes
+  new MutationObserver(() => {
+    const iframe = document.querySelector<HTMLIFrameElement>(
+      "iframe.giscus-frame"
+    );
+    iframe?.contentWindow?.postMessage(
+      { giscus: { setConfig: { theme: giscusTheme() } } },
+      "https://giscus.app"
+    );
+  }).observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ["data-theme"],
+  });
+
+  document.addEventListener("astro:page-load", mountGiscus);
+</script>
