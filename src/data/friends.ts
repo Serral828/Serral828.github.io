@@ -16,4 +16,11 @@ export type Friend = {
  *   avatar: "https://github.com/someone.png",
  * },
  */
-export const friends: Friend[] = [];
+export const friends: Friend[] = [
+  {
+    name: "Clairis's Blog",
+    url: "https://clairis.cn",
+    description: "欢迎来到 Clairis 的博客",
+    avatar: "https://clairis.cn/images/avatar.jpg",
+  },
+];
